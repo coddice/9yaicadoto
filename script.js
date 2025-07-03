@@ -24,7 +24,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let isMusicMutedByUser = true;
     let isContentVisible = true;
-//pidory
     
 
     const playersData = {
