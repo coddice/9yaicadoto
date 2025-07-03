@@ -1,0 +1,548 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto Mono', monospace;
+    color: #e0e0e0;
+    height: 100vh;
+    overflow: hidden;
+    background-color: #000;
+}
+
+#bg-video {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    z-index: -2;
+    transform: translateX(-50%) translateY(-50%);
+    background-size: cover;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: -1;
+}
+
+.content-box {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    
+    background-color: rgba(25, 25, 25, 0.7);
+    padding: 30px 40px;
+    border-radius: 10px;
+    border: 1px solid #444;
+    
+    max-width: 500px;
+    width: 90%;
+    z-index: 0;
+    
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+
+    opacity: 0;
+    transition: opacity 0.5s ease, max-width 0.5s ease;
+}
+
+#main-screen.content-box {
+    animation: fadeInScale 1s ease-out forwards 0.8s;
+}
+
+@keyframes fadeInScale {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.9);
+    }
+    100% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+.content-box h1 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 48px;
+    color: #ff0000;
+    margin-bottom: 25px;
+    text-transform: uppercase;
+    letter-spacing: 5px;
+    text-align: center;
+    
+    text-shadow: 0 0 10px rgba(255, 0, 0, 0.7),
+                 0 0 20px rgba(255, 0, 0, 0.5),
+                 0 0 30px rgba(255, 0, 0, 0.3);
+    animation: neon-pulse 2s ease-in-out infinite alternate;
+}
+
+@keyframes neon-pulse {
+    0% {
+        text-shadow: 0 0 10px rgba(255, 0, 0, 0.7),
+                     0 0 20px rgba(255, 0, 0, 0.5),
+                     0 0 30px rgba(255, 0, 0, 0.3);
+        opacity: 1;
+    }
+    50% {
+        text-shadow: 0 0 5px rgba(255, 0, 0, 0.2),
+                     0 0 10px rgba(255, 0, 0, 0.1);
+        opacity: 0.8;
+    }
+    100% {
+        text-shadow: 0 0 10px rgba(255, 0, 0, 0.7),
+                     0 0 20px rgba(255, 0, 0, 0.5),
+                     0 0 30px rgba(255, 0, 0, 0.3);
+        opacity: 1;
+    }
+}
+
+.players-list {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    width: fit-content;
+    margin: 0 auto;
+}
+
+.players-list p {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 18px;
+    margin-bottom: 10px;
+    line-height: 1.5;
+    color: #e0e0e0;
+    text-align: left;
+}
+
+.players-list p:last-child {
+    margin-bottom: 0;
+}
+
+.players-list .position-icon {
+    width: 28px;
+    height: 28px;
+    vertical-align: middle;
+    margin-right: 15px;
+}
+
+.about-button {
+    position: absolute;
+    bottom: 230px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+
+    padding: 12px 25px;
+    background-color: transparent;
+    border: 2px solid #ff0000;
+    border-radius: 5px;
+    
+    color: #ff0000;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 16px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+    transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease, opacity 0.5s ease;
+
+    opacity: 0;
+    animation: fadeInButton 1s ease-out forwards 1.5s;
+}
+
+@keyframes fadeInButton {
+    0% {
+        opacity: 0;
+        transform: translateX(-50%) translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+.about-button:hover {
+    background-color: rgba(255, 0, 0, 0.1);
+    color: #fff;
+    box-shadow: 0 0 20px rgba(255, 0, 0, 0.8), 0 0 30px rgba(255, 0, 0, 0.6);
+    transform: translateX(-50%) translateY(-2px);
+}
+
+.about-button:active {
+    transform: translateX(-50%) translateY(0);
+    box-shadow: 0 0 5px rgba(255, 0, 0, 0.3);
+}
+
+.team-slogan {
+    position: absolute;
+    bottom: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 5;
+
+    font-family: 'Roboto Mono', monospace;
+    font-size: 20px;
+    color: rgba(179, 179, 179, 0.7);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-align: center;
+    text-shadow: 0 0 5px rgba(179, 179, 179, 0.3);
+
+    animation: fadePulseSlogan 3s ease-in-out infinite alternate;
+}
+
+@keyframes fadePulseSlogan {
+    0% {
+        opacity: 0.7;
+        transform: translateX(-50%) scale(0.98);
+    }
+    50% {
+        opacity: 1;
+        transform: translateX(-50%) scale(1.02);
+    }
+    100% {
+        opacity: 0.7;
+        transform: translateX(-50%) scale(0.98);
+    }
+}
+
+.hidden {
+    display: none !important;
+}
+
+.fade-out {
+    opacity: 0 !important;
+    transition: opacity 0.5s ease;
+}
+
+.fade-in {
+    opacity: 1 !important;
+    transition: opacity 0.5s ease;
+}
+
+#player-info-container.hidden {
+    opacity: 0 !important;
+}
+
+#player-info-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    
+    background-color: rgba(25, 25, 25, 0.7);
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid #444;
+    
+    max-width: 900px;
+    width: 90%;
+    min-height: 400px;
+    z-index: 1;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+
+    opacity: 0;
+    transition: opacity 0.5s ease, max-width 0.5s ease;
+}
+
+#player-info-container h2 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 32px;
+    color: #ff0000;
+    margin-bottom: 25px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-align: center;
+    text-shadow: 0 0 8px rgba(255, 0, 0, 0.7);
+}
+
+.player-sidebar {
+    flex: 0 0 250px;
+    padding-right: 20px;
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.player-sidebar h2 {
+    font-size: 30px;
+    margin-bottom: 20px;
+}
+
+#players-names-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 20px 0;
+    width: 100%;
+    text-align: center;
+}
+
+#players-names-list li {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 20px;
+    color: #e0e0e0;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: color 0.3s ease, text-shadow 0.3s ease, transform 0.3s ease;
+    padding: 8px 0;
+    border-radius: 3px;
+    transition: color 0.3s ease, text-shadow 0.3s ease, transform 0.3s ease, background-color 0.3s ease, border-left 0.3s ease, padding-left 0.3s ease;
+}
+
+#players-names-list li:hover {
+    color: #00ffff;
+    text-shadow: 0 0 18px rgba(0, 255, 255, 1), 0 0 30px rgba(0, 255, 255, 0.7), 0 0 50px rgba(0, 255, 255, 0.5);
+    transform: scale(1.05);
+}
+
+.player-details-display {
+    flex: 1;
+    padding-left: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 300px;
+}
+
+#player-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+#player-card img {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    border: 3px solid #ff0000;
+    object-fit: cover;
+    box-shadow: 0 0 20px rgba(255, 0, 0, 0.7);
+}
+
+#player-card h3 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 38px;
+    color: #ff0000;
+    text-shadow: 0 0 10px rgba(255, 0, 0, 0.8);
+    margin-top: 15px;
+    text-transform: uppercase;
+}
+
+#player-card p {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 17px;
+    color: #e0e0e0;
+    line-height: 1.6;
+    max-width: 450px;
+    text-align: center;
+}
+
+.back-button {
+    margin-top: auto;
+    padding: 10px 20px;
+    background-color: transparent;
+    border: 2px solid #fff;
+    border-radius: 5px;
+    color: #fff;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.back-button:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #ff0000;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+}
+
+@media (max-width: 850px) {
+    #player-info-container {
+        flex-direction: column;
+        max-width: 90%;
+        padding: 20px;
+        min-height: auto;
+        justify-content: flex-start;
+        overflow-y: auto;
+    }
+
+    .player-sidebar {
+        flex: none;
+        width: 100%;
+        padding-right: 0;
+        border-right: none;
+        margin-bottom: 30px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .player-sidebar h2 {
+        font-size: 28px;
+    }
+
+    #players-names-list li {
+        font-size: 18px;
+    }
+
+    .player-details-display {
+        flex: none;
+        width: 100%;
+        padding-left: 0;
+        min-height: auto;
+    }
+    #player-card img {
+        width: 150px;
+        height: 150px;
+    }
+    #player-card h3 {
+        font-size: 32px;
+    }
+    #player-card p {
+        font-size: 15px;
+        max-width: 90%;
+    }
+    .back-button {
+        margin-top: 20px;
+    }
+}
+
+@media (max-width: 600px) {
+    .content-box h1 {
+        font-size: 36px;
+        letter-spacing: 3px;
+    }
+    .about-button {
+        bottom: 80px;
+        padding: 10px 20px;
+        font-size: 14px;
+    }
+    .team-slogan {
+        font-size: 16px;
+        bottom: 30px;
+        letter-spacing: 1px;
+    }
+}
+
+#players-names-list li.selected-player {
+    color: #00ffff;
+    text-shadow: 0 0 15px rgba(0, 255, 255, 0.8), 0 0 25px rgba(0, 255, 255, 0.5), 0 0 40px rgba(0, 255, 255, 0.3);
+    font-weight: bold;
+    background-color: rgba(0, 255, 255, 0.08);
+    border-left: 3px solid #00ffff;
+    padding-left: 15px;
+    transform: scale(1.05);
+    transition: all 0.3s ease;
+}
+
+#players-names-list li.selected-player:hover {
+    color: #00ffff;
+    text-shadow: 0 0 18px rgba(0, 255, 255, 1), 0 0 30px rgba(0, 255, 255, 0.7), 0 0 50px rgba(0, 255, 255, 0.5);
+    transform: scale(1.07);
+    background-color: rgba(0, 255, 255, 0.12);
+}
+
+.audio-toggle-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 10px 15px;
+    border-radius: 5px;
+    background: rgba(25, 25, 25, 0.7);
+    color: #fff;
+    border: 1px solid #444;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 1.2em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 999;
+    opacity: 1;
+    text-transform: uppercase;
+    
+}
+
+.audio-toggle-button:hover {
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.8), 0 0 25px rgba(255, 94, 0, 0.5);
+    transform: scale(1.05);
+}
+
+.audio-toggle-button.hidden {
+    opacity: 0;
+    pointer-events: none; 
+}
+
+.toggle-content-button {
+    position: fixed;
+    bottom: 20px;
+    right: 90px; 
+    padding: 10px 15px;
+    border-radius: 5px;
+    background: rgba(25, 25, 25, 0.7);
+    color: #fff;
+    border: 1px solid #444;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 1.2em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 999; 
+    opacity: 1;
+    text-transform: uppercase;
+}
+
+.toggle-content-button:hover {
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.8), 0 0 25px rgba(0, 255, 255, 0.5); 
+    transform: scale(1.05);
+}
+
+.hide-content-box {
+    opacity: 0 !important;
+    pointer-events: none !important; 
+    transition: opacity 0.5s ease;
+}
+
+#bg-video.bright {
+    filter: brightness(1) grayscale(0); 
+    transition: filter 0.5s ease-in-out;
+}
+
+#bg-video.dim {
+    filter: brightness(0.6) grayscale(0.5); 
+}
+
+.about-button.hidden-for-video,
+.team-slogan.hidden-for-video,
+.overlay.hidden-for-video {
+    opacity: 0 !important;
+    pointer-events: none !important;
+    transition: opacity 0.5s ease;
+}

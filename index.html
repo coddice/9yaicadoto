@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>9yaica</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Share+Tech+Mono&family=Press+Start+2P&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <video autoplay loop muted playsinline id="bg-video">
+        <source src="videos/background.mp4" type="video/mp4">
+        Твой браузер не поддерживает видео.
+    </video>
+
+    <audio id="main-theme-music" loop>
+        <source src="audio/main_theme.mp3" type="audio/mpeg">
+        Ваш браузер не поддерживает аудио.
+    </audio>
+
+    <audio id="about-us-music" loop>
+        <source src="audio/about_us_theme.mp3" type="audio/mpeg">
+        Ваш браузер не поддерживает аудио.
+    </audio>
+
+    <div class="overlay"></div>
+
+    <div class="content-box" id="main-screen">
+        <h1>9YAICA</h1>
+        <div class="players-list">
+            <p><img src="images/pos1.png" alt="Позиция 1" class="position-icon"> renami-</p>
+            <p><img src="images/pos2.png" alt="Позиция 2" class="position-icon"> Larl</p>
+            <p><img src="images/pos3.png" alt="Позиция 3" class="position-icon"> 33</p>
+            <p><img src="images/pos4.png" alt="Позиция 4" class="position-icon"> 9class</p>
+            <p><img src="images/pos5.png" alt="Позиция 5" class="position-icon"> nolek</p>
+        </div>
+    </div>
+
+    <button class="about-button">ABOUT US</button>
+
+    <p class="team-slogan">9YAICA4EVER</p>
+
+    <div id="player-info-container" class="content-box hidden">
+        <div class="player-sidebar">
+            <h2>players</h2>
+            <ul id="players-names-list">
+                <li data-player="renami">renami-</li>
+                <li data-player="player2">Larl</li>
+                <li data-player="player3">33</li>
+                <li data-player="player4">9class</li>
+                <li data-player="nolek">nolek</li>
+            </ul>
+            <button class="back-button" data-target="main-screen">BACK</button>
+        </div>
+
+        <div class="player-details-display">
+            <div id="player-card">
+                <img id="player-photo" src="images/placeholder.jpg" alt="Фото игрока">
+                <h3 id="player-nickname">name</h3>
+                <p id="player-description">choose a player</p>
+            </div>
+        </div>
+    </div>
+
+    <button id="audio-toggle-button" class="audio-toggle-button hidden">
+        🔊 
+    </button>
+    
+    <button id="toggle-content-button" class="toggle-content-button">
+        👁️
+    </button>
+
+    <script src="script.js"></script>
+</body>
+</html>
