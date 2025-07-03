@@ -145,7 +145,6 @@ document.addEventListener('DOMContentLoaded', () => {
             audioToggleButton.innerHTML = '🔇';
             fadeOut(mainThemeMusic); 
             fadeOut(aboutUsMusic); 
-            //fadeOut(bgVideo);
         }
     });
 
