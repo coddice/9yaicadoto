@@ -22,7 +22,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const FADE_DURATION = 1000;
     const FADE_INTERVAL = 50;
 
-    let isMusicMutedByUser = true;
+    // ИЗМЕНЕНО: Изначально предполагаем, что музыка не мьютится пользователем
+    // Но будем реагировать на блокировку браузером.
+    let isMusicMutedByUser = false; 
     let isContentVisible = true;
     
 
@@ -78,7 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function fadeIn(audioElement, targetVolume, callback) {
-        if (!isMusicMutedByUser) {
+        if (!isMusicMutedByUser) { // Если не мьютировано пользователем, тогда плавно включаем
             audioElement.volume = 0;
             audioElement.play().catch(e => console.error("Ошибка при воспроизведении аудио:", e)); 
             let volume = 0;
@@ -94,32 +96,37 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (callback) callback();
                 }
             }, FADE_INTERVAL);
-        } else {
-            audioElement.volume = 0;
+        } else { // Если мьютировано, просто запускаем без звука
+            audioElement.volume = 0; // Гарантируем, что громкость 0
             audioElement.play().catch(e => console.error("Ошибка при воспроизведении аудио:", e));
             if (callback) callback();
         }
     }
 
     mainThemeMusic.volume = 0;
-    bgVideo.volume = 0;
+    bgVideo.volume = 0; // Видео всегда без звука, громкость 0
     bgVideo.play().catch(e => console.error("Ошибка при воспроизведении фонового видео:", e));
+
+    // Инициализация кнопки звука при загрузке:
+    // Если браузер заблокирует автовоспроизведение, то isMusicMutedByUser станет true,
+    // и кнопка покажет "🔇", предлагая включить звук.
+    // Если не заблокирует, то isMusicMutedByUser останется false, и кнопка покажет "🔊".
+    audioToggleButton.innerHTML = '🔊'; // Изначально показываем, что звук включен
+    audioToggleButton.classList.remove('hidden'); // Убираем класс hidden, чтобы кнопка была видна всегда
 
     mainThemeMusic.play()
         .then(() => {
-            isMusicMutedByUser = false;
+            isMusicMutedByUser = false; // Музыка успешно запущена
             fadeIn(mainThemeMusic, MAX_VOLUME);
-            audioToggleButton.innerHTML = '🔊';
-            audioToggleButton.classList.add('hidden');
+            audioToggleButton.innerHTML = '🔊'; // Показываем, что звук включен
             console.log("Музыка успешно запущена автоматически.");
         })
         .catch(error => {
-            console.warn("Автовоспроизведение музыки заблокировано браузером. Показываем кнопку в углу. Ошибка:", error);
-            isMusicMutedByUser = true;
-            audioToggleButton.innerHTML = '🔇';
-            audioToggleButton.classList.remove('hidden');
+            console.warn("Автовоспроизведение музыки заблокировано браузером. Пользователь должен будет включить вручную. Ошибка:", error);
+            isMusicMutedByUser = true; // Музыка заблокирована, считаем, что она "мьютирована пользователем"
+            audioToggleButton.innerHTML = '🔇'; // Показываем, что звук выключен
             
-            mainThemeMusic.pause();
+            mainThemeMusic.pause(); // Убедимся, что она на паузе
             mainThemeMusic.currentTime = 0;
         });
 
@@ -128,23 +135,28 @@ document.addEventListener('DOMContentLoaded', () => {
             isMusicMutedByUser = false;
             audioToggleButton.innerHTML = '🔊';
             
+            // Логика включения звука
             if (!isContentVisible) { 
-                bgVideo.volume = 0.5;
+                // Это когда контент скрыт и мы смотрим видео на полную яркость.
+                // Музыка здесь не играет, а громкость bgVideo всегда 0.
+                // Так что тут ничего не меняем для bgVideo.
             } else if (playerInfoContainer.classList.contains('fade-in') && !playerInfoContainer.classList.contains('hidden')) {
+                // Если на экране ABOUT US
                 fadeIn(aboutUsMusic, MAX_VOLUME);
                 mainThemeMusic.pause();
                 mainThemeMusic.currentTime = 0;
-            } else {
+            } else { // Если на главном экране
                 fadeIn(mainThemeMusic, MAX_VOLUME);
                 aboutUsMusic.pause();
                 aboutUsMusic.currentTime = 0;
             }
 
-        } else {
+        } else { // Пользователь выключает звук
             isMusicMutedByUser = true;
             audioToggleButton.innerHTML = '🔇';
             fadeOut(mainThemeMusic); 
             fadeOut(aboutUsMusic); 
+            // УБРАЛ fadeOut(bgVideo); -- это была причина остановки видео
         }
     });
 
@@ -191,6 +203,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             }
         } else {
+            // Если звук мьютирован пользователем, просто переключаем треки, не меняя громкость (которая 0)
             if (transitionToPlayersScreen) {
                  aboutUsMusic.volume = 0;
                  aboutUsMusic.play().catch(e => console.error("Ошибка при воспроизведении audio:", e));
