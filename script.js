@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let isMusicMutedByUser = true;
     let isContentVisible = true;
+    
 
     const playersData = {
         'renami': {
@@ -144,7 +145,7 @@ document.addEventListener('DOMContentLoaded', () => {
             audioToggleButton.innerHTML = '🔇';
             fadeOut(mainThemeMusic); 
             fadeOut(aboutUsMusic); 
-            fadeOut(bgVideo);
+            //fadeOut(bgVideo);
         }
     });
 
